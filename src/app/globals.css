@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  --font-sans: Helvetica, "Helvetica Neue", Arial, sans-serif;
+  --color-ink: #10110e;
+  --color-panel: #191b15;
+  --color-panel-2: #23261e;
+  --color-line: #34382d;
+  --color-muted: #9c978c;
+  --color-accent: #e2ff55;
+  --color-accent-ink: #17180b;
+  --color-danger: #ff7a59;
+  --color-album: #c9d2ff;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: var(--color-ink);
+  color: #f3f1e8;
+  font-family: Helvetica, "Helvetica Neue", Arial, sans-serif;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
+}
+
+dialog {
+  margin: auto;
+  width: min(26rem, calc(100% - 2rem));
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  background: var(--color-panel);
+  color: inherit;
+  padding: 0;
+}
+
+dialog::backdrop {
+  background: rgba(0, 0, 0, 0.62);
+}
+
+* {
+  scrollbar-color: #3a3e32 transparent;
+}
