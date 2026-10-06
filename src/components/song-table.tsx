@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
 import { formatDate } from "@/lib/format";
 import type { LibraryRow, LibrarySource } from "@/lib/library/types";
+
+const rowColumns =
+  "lg:grid-cols-[minmax(0,1.7fr)_minmax(0,1.2fr)_minmax(0,1.1fr)_52px_104px_minmax(0,1.3fr)]";
 
 function Chip({ source }: { source: LibrarySource }) {
   const tone =
@@ -24,7 +27,7 @@ function Row({ row, compact }: { row: LibraryRow; compact: boolean }) {
   return (
     <div
       role="row"
-      className="grid h-full items-center gap-x-3 border-b border-line/80 px-3 hover:bg-white/3 lg:grid-cols-[minmax(180px,1.7fr)_minmax(120px,1.2fr)_minmax(120px,1.1fr)_52px_104px_minmax(150px,1.3fr)]"
+      className={`grid min-w-0 items-center gap-x-3 border-b border-line/80 px-3 hover:bg-white/3 ${rowColumns}`}
     >
       <div role="cell" className="flex min-w-0 items-center gap-3 py-2">
         <span className="grid h-9 w-9 shrink-0 place-items-center rounded bg-panel-2 text-xs text-muted" aria-hidden>
@@ -88,7 +91,7 @@ export function SongTable({
 }) {
   const parentRef = useRef<HTMLDivElement>(null);
   const [compact, setCompact] = useState(false);
-  useEffect(() => {
+  useLayoutEffect(() => {
     const media = window.matchMedia("(max-width: 1023px)");
     const apply = () => setCompact(media.matches);
     apply();
@@ -103,6 +106,12 @@ export function SongTable({
     estimateSize: () => (compact ? 92 : 56),
     overscan: 10,
   });
+  // Row slots are cached from estimateSize. Crossing lg changes the real row
+  // height, but the cache does not watch that function, so a resize keeps the
+  // height from the first layout until we measure again.
+  useLayoutEffect(() => {
+    virtualizer.measure();
+  }, [compact, virtualizer]);
   const virtualItems = virtualizer.getVirtualItems();
   const lastIndex = virtualItems.at(-1)?.index ?? -1;
   useEffect(() => {
@@ -123,7 +132,7 @@ export function SongTable({
     <div className="flex min-h-0 flex-1 flex-col">
       <div
         role="row"
-        className="hidden grid-cols-[minmax(180px,1.7fr)_minmax(120px,1.2fr)_minmax(120px,1.1fr)_52px_104px_minmax(150px,1.3fr)] gap-x-3 border-b border-line px-3 py-2 text-[11px] uppercase tracking-wide text-muted lg:grid"
+        className={`hidden min-w-0 ${rowColumns} gap-x-3 border-b border-line px-3 py-2 text-[11px] uppercase tracking-wide text-muted lg:grid`}
       >
         <span>Song</span>
         <span>Artists</span>
@@ -137,6 +146,8 @@ export function SongTable({
           {virtualItems.map((item) => (
             <div
               key={rows[item.index].id}
+              data-index={item.index}
+              ref={virtualizer.measureElement}
               style={{ position: "absolute", top: 0, left: 0, width: "100%", transform: `translateY(${item.start}px)` }}
             >
               <Row row={rows[item.index]} compact={compact} />
