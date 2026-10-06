@@ -2,6 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { getPool } from "@/db";
 import { encryptSecret } from "@/lib/crypto";
 import { requiredEnv } from "@/lib/env";
+import { rateLimitError } from "@/lib/http";
+import { enforceAuth } from "@/lib/limits";
 import { appRedirect } from "@/lib/redirect";
 import {
   OAUTH_STATE_COOKIE,
@@ -21,6 +23,8 @@ function clearOauth(response: NextResponse) {
 }
 
 export async function GET(request: NextRequest) {
+  const limited = await enforceAuth(request);
+  if (!limited.ok) return rateLimitError(limited.message, limited.retryAfterSeconds);
   const url = request.nextUrl;
   const fail = (code: string) => clearOauth(appRedirect(request, `/?error=${code}`));
   if (url.searchParams.get("error")) return fail("denied");

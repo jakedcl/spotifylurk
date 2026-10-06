@@ -5,6 +5,19 @@ export function jsonError(message: string, status = 400) {
   return NextResponse.json({ error: message }, { status });
 }
 
+export function rateLimitError(message: string, retryAfterSeconds: number) {
+  return NextResponse.json(
+    { error: message },
+    {
+      status: 429,
+      headers: {
+        "Retry-After": String(Math.max(1, retryAfterSeconds)),
+        "Cache-Control": "no-store",
+      },
+    },
+  );
+}
+
 export async function requireUser(): Promise<CurrentUser | NextResponse> {
   try {
     const user = await getCurrentUser();
