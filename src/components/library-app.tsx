@@ -204,7 +204,7 @@ export function LibraryApp({ user }: { user: Viewer }) {
   const emptyLibrary = !loading && total === 0 && isDefaultDraft(draft) && !error;
 
   return (
-    <div className="flex h-dvh flex-col">
+    <div className="flex h-dvh flex-col overflow-hidden">
       <header className="border-b border-line">
         <div className="flex flex-wrap items-center gap-3 px-4 py-3">
           <Link href="/" className="flex items-center gap-2 text-sm">
@@ -262,11 +262,11 @@ export function LibraryApp({ user }: { user: Viewer }) {
           </button>
         ))}
       </div>
-      <div className="grid min-h-0 flex-1 lg:grid-cols-[270px_minmax(0,1fr)_360px]">
-        <aside className={`${pane === "filters" ? "block" : "hidden"} min-h-0 overflow-auto border-line lg:block lg:border-r`}>
+      <div className="grid min-h-0 min-w-0 flex-1 lg:grid-cols-[270px_minmax(0,1fr)_360px]">
+        <aside className={`${pane === "filters" ? "block" : "hidden"} min-h-0 min-w-0 overflow-auto border-line lg:block lg:border-r`}>
           <FiltersPanel draft={draft} playlists={playlists} onChange={setDraft} onReset={() => setDraft(emptyDraft())} />
         </aside>
-        <main className={`${pane === "songs" ? "flex" : "hidden"} min-h-0 flex-col lg:flex`}>
+        <main className={`${pane === "songs" ? "flex" : "hidden"} min-h-0 min-w-0 flex-col lg:flex`}>
           <div className="flex flex-wrap items-end justify-between gap-3 border-b border-line px-4 py-3">
             <div>
               <p className="text-sm">
@@ -334,7 +334,7 @@ export function LibraryApp({ user }: { user: Viewer }) {
             <SongTable rows={rows} total={total} loading={loading} loadingMore={loadingMore} onNearEnd={loadMore} />
           ) : null}
         </main>
-        <div className={`${pane === "chat" ? "flex" : "hidden"} min-h-0 lg:flex`}>
+        <div className={`${pane === "chat" ? "flex" : "hidden"} min-h-0 min-w-0 lg:flex`}>
           <ChatPanel />
         </div>
       </div>

@@ -3,7 +3,7 @@
 import type { PlaylistFacet } from "@/lib/library/facets";
 import type { FilterDraft } from "@/lib/library/filters";
 
-const field = "w-full rounded-md border border-line bg-ink px-2.5 py-1.5 text-sm outline-none focus:border-accent";
+const field = "w-full min-w-0 rounded-md border border-line bg-ink px-2.5 py-1.5 text-sm outline-none focus:border-accent";
 
 export function FiltersPanel({
   draft,

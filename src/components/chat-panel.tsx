@@ -121,7 +121,7 @@ export function ChatPanel() {
   const lastUsage = [...messages].reverse().find((message) => message.usage)?.usage;
 
   return (
-    <section className="flex h-full min-h-0 flex-col border-line lg:border-l">
+    <section className="flex h-full min-h-0 w-full min-w-0 flex-col border-line lg:border-l">
       <header className="flex items-center justify-between border-b border-line px-4 py-3">
         <div>
           <h2 className="text-sm">Ask the library</h2>
