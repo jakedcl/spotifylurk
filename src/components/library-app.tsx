@@ -167,7 +167,7 @@ export function LibraryApp({ user }: { user: Viewer }) {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = "pile.csv";
+    link.download = "spotify-lurk.csv";
     link.click();
     URL.revokeObjectURL(url);
   }
@@ -209,7 +209,7 @@ export function LibraryApp({ user }: { user: Viewer }) {
         <div className="flex flex-wrap items-center gap-3 px-4 py-3">
           <Link href="/" className="flex items-center gap-2 text-sm">
             <span className="inline-block h-2.5 w-2.5 bg-accent" aria-hidden />
-            Pile
+            SPOTIFY LURK
           </Link>
           <p className="min-w-0 flex-1 truncate text-sm text-muted">
             {user.displayName}

@@ -27,12 +27,12 @@ export default async function Home({ searchParams }: { searchParams: Promise<{ e
     <main className="mx-auto flex min-h-dvh w-full max-w-xl flex-col justify-center px-6 py-16">
       <p className="flex items-center gap-2 text-sm text-muted">
         <span className="inline-block h-2.5 w-2.5 bg-accent" aria-hidden />
-        Pile
+        SPOTIFY LURK
       </p>
       <h1 className="mt-4 text-4xl leading-tight tracking-tight">Every song you saved, in one list.</h1>
       <p className="mt-4 text-lg leading-relaxed text-muted">
         Liked tracks, songs on your playlists, and tracks from albums you saved. Search them, keep the ones you
-        added separate from album-only songs, and ask questions about the pile.
+        added separate from album-only songs, and ask questions about your library.
       </p>
       {dbError ? (
         <p className="mt-6 rounded-md border border-danger/40 bg-danger/10 px-3 py-2 text-sm text-danger">

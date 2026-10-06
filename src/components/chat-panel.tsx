@@ -125,7 +125,7 @@ export function ChatPanel() {
       <header className="flex items-center justify-between border-b border-line px-4 py-3">
         <div>
           <h2 className="text-sm">Ask the library</h2>
-          <p className="text-xs text-muted">Looks songs up. Never sends the whole pile.</p>
+          <p className="text-xs text-muted">Looks songs up. Never sends the whole library.</p>
         </div>
         <button type="button" className="text-xs text-muted hover:text-[#f3f1e8]" onClick={() => void clearChat()}>
           Clear
