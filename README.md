@@ -1,6 +1,6 @@
-# Pile
+# Spotify Lurk
 
-Every song you saved, in one list. Pile signs in with Spotify, pulls liked songs, playlist tracks, and tracks from saved albums, and lets you filter that library or ask questions about it.
+Every song you saved, in one list. Spotify Lurk signs in with Spotify, pulls liked songs, playlist tracks, and tracks from saved albums, and lets you filter that library or ask questions about it.
 
 Songs you added (liked tracks and playlist tracks) stay separate from songs that are only there because an album was saved. The default view is songs you added.
 
@@ -46,7 +46,7 @@ In the app settings, add these redirect URIs:
 
 If you run Next on another port, change `SPOTIFY_REDIRECT_URI` and add that exact URI too. Use `127.0.0.1`, not `localhost`.
 
-Development mode allows **5 users**. Add each person under **User Management** before they can sign in. The app owner needs Spotify Premium or the API will refuse requests. Extended quota mode is not required for this app, but followed playlists (ones you don't own or collaborate on) return 403 for their tracks. Pile keeps the playlist and marks the tracks unavailable instead of failing the sync.
+Development mode allows **5 users**. Add each person under **User Management** before they can sign in. The app owner needs Spotify Premium or the API will refuse requests. Extended quota mode is not required for this app, but followed playlists (ones you don't own or collaborate on) return 403 for their tracks. Spotify Lurk keeps the playlist and marks the tracks unavailable instead of failing the sync.
 
 Scopes requested: `user-library-read`, `playlist-read-private`, `playlist-read-collaborative`, `user-follow-read`, `user-top-read`, `user-read-recently-played`, `user-read-private`, `playlist-modify-private`, `playlist-modify-public`.
 

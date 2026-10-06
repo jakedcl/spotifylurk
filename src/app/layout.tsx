@@ -2,8 +2,15 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Pile",
+  title: "Spotify Lurk",
   description: "Every song you saved, in one list.",
+  openGraph: {
+    title: "Spotify Lurk",
+    description: "Every song you saved, in one list.",
+    siteName: "Spotify Lurk",
+    url: "https://spotifylurk.vercel.app",
+    type: "website",
+  },
   robots: { index: false, follow: false },
 };
 

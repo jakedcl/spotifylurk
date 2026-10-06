@@ -26,7 +26,7 @@ export async function saveTracksToSpotify(opts: {
   const missing = uniqueIds.filter((id) => !byId.has(id));
   if (missing.length) throw new Error("Some of those songs are not in your library.");
   const uris = uniqueIds.map((id) => byId.get(id)!);
-  const description = (opts.description ?? "Saved from Pile.").slice(0, 300);
+  const description = (opts.description ?? "Saved from Spotify Lurk.").slice(0, 300);
   const created = await opts.client.post<{ id: string }>("/v1/me/playlists", {
     name,
     description,

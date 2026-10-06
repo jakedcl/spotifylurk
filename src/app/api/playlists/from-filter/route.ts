@@ -24,7 +24,7 @@ export async function POST(request: Request) {
       userId: user.id,
       client: clientForUser(user.id),
       name,
-      description: "Saved from a Pile filter.",
+      description: "Saved from a Spotify Lurk filter.",
       trackIds: result.rows.map((row) => row.id),
     });
     return Response.json({ ...saved, truncated: result.total > result.rows.length, total: result.total });

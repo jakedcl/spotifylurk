@@ -14,7 +14,7 @@ export async function GET(request: Request) {
     return new Response(toCsv(result.rows), {
       headers: {
         "Content-Type": "text/csv; charset=utf-8",
-        "Content-Disposition": "attachment; filename=\"pile.csv\"",
+        "Content-Disposition": "attachment; filename=\"spotify-lurk.csv\"",
       },
     });
   } catch (error) {
