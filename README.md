@@ -30,7 +30,12 @@ The dev server listens on [http://127.0.0.1:3847](http://127.0.0.1:3847). Spotif
 | `SESSION_SECRET` | Signs the httpOnly session cookie. |
 | `OPENAI_API_KEY` | Optional. Chat is disabled until this is set. |
 | `OPENAI_MODEL` | Defaults to `gpt-4o-mini`. |
-| `DEV_PREVIEW` | `true` shows the sample-library login outside production. |
+| `DEV_PREVIEW` | `true` shows the sample-library login outside production. Ignored when `NODE_ENV=production`. |
+| `CHAT_PER_HOUR` | Chat questions per user per hour. Default 20. |
+| `CHAT_PER_DAY` | Chat questions per user per UTC day. Default 50. |
+| `CHAT_DAILY_USD` | Estimated OpenAI spend per user per UTC day. Default `0.50`. |
+| `SYNC_STARTS_PER_HOUR` | `POST /api/sync/start` per user per hour. Default 5. |
+| `AUTH_PER_HOUR` | Sign-in attempts per IP per hour. Default 30. |
 
 ## Spotify dashboard
 
@@ -57,6 +62,16 @@ Refresh walks Spotify page by page:
 
 429s with a short `Retry-After` are retried. Longer ones pause the sync and the browser waits. Access tokens refresh on expiry and on 401. Unchanged playlist snapshots are skipped. The same song is one row, matched by Spotify URI, then ISRC, then normalized title + primary artist. Popularity is often null in development mode and is not used.
 
+## Limits
+
+Chat posts, sync starts, and sign-in are capped in Postgres (`request_limits`), so the counters survive across Vercel instances. Apply `drizzle/0002_request_limits.sql` with `npm run db:migrate` before deploying.
+
+`POST /api/chat` stops at `CHAT_PER_HOUR` and `CHAT_PER_DAY`. It also stops when today's rows in `token_usage_log` reach `CHAT_DAILY_USD`, and that check happens before the OpenAI call. `POST /api/sync/start` stops at `SYNC_STARTS_PER_HOUR`. Sync steps are not capped, because one library refresh is many short requests. `/api/auth/login`, `/api/auth/callback`, and the sample login share `AUTH_PER_HOUR` per IP.
+
+Over a cap, the route returns **429** with `{ "error": "..." }` and a `Retry-After` header. Windows are fixed (hour, or UTC day) and can bunch at the boundary. Set a cap to `0` to block that route. Invalid values fall back to the defaults.
+
+`POST /api/auth/dev` returns 404 when `NODE_ENV` is `production` or `DEV_PREVIEW` is not `true`. The home page hides the sample-library button on the same check.
+
 ## Chat
 
 The model never receives the whole library. It gets tools that query Postgres and return at most 50 compact rows: `search_songs`, `library_stats`, `get_songs_by_ids`, and `propose_playlist`. Proposed playlists are drafts until you click **Save to Spotify**. Track ids are checked against your library. History sent to the model is the system prompt plus the last few turns. Each request logs token counts and an approximate cost, and the chat panel shows the same numbers.
@@ -77,7 +92,7 @@ Runs one real question ("What artists did I save the most in 2021?") against the
 | `npm run db:migrate` | Apply SQL in `drizzle/` |
 | `npm run db:seed` | Replace the sample library |
 | `npm run db:setup` | Migrate and seed |
-| `npm test` | Dedupe, Spotify client, sync, and AI tool tests |
+| `npm test` | Dedupe, Spotify client, sync, AI tools, and rate-limit tests |
 | `npm run ai:smoke` | One live OpenAI request |
 | `npm run build` | Production build |
 

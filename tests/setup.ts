@@ -8,6 +8,7 @@ beforeAll(async () => {
 
 beforeEach(async () => {
   await getPool().query(`TRUNCATE TABLE
+    request_limits,
     token_usage_log,
     chat_messages,
     playlist_proposals,

@@ -205,6 +205,19 @@ export const playlistProposals = pgTable("playlist_proposals", {
   savedAt: timestamp("saved_at", { withTimezone: true }),
 });
 
+export const requestLimits = pgTable(
+  "request_limits",
+  {
+    bucket: text("bucket").notNull(),
+    windowStart: timestamp("window_start", { withTimezone: true }).notNull(),
+    hits: integer("hits").notNull(),
+  },
+  (table) => [
+    primaryKey({ columns: [table.bucket, table.windowStart] }),
+    index("request_limits_window_idx").on(table.windowStart),
+  ],
+);
+
 export const tokenUsageLog = pgTable("token_usage_log", {
   id: uuid("id").primaryKey().defaultRandom(),
   userId: uuid("user_id")

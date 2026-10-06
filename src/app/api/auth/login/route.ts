@@ -1,6 +1,8 @@
 import { createHash, randomBytes } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { SPOTIFY_SCOPES, requiredEnv } from "@/lib/env";
+import { rateLimitError } from "@/lib/http";
+import { enforceAuth } from "@/lib/limits";
 import { appRedirect } from "@/lib/redirect";
 import { OAUTH_STATE_COOKIE, OAUTH_VERIFIER_COOKIE, cookieOptions } from "@/lib/session";
 
@@ -8,6 +10,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  const limited = await enforceAuth(request);
+  if (!limited.ok) return rateLimitError(limited.message, limited.retryAfterSeconds);
   let clientId = "";
   let redirectUri = "";
   try {

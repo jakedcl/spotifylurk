@@ -1,7 +1,8 @@
 import { getPool } from "@/db";
 import { runChat } from "@/lib/ai/chat";
 import { createOpenAIClient } from "@/lib/ai/openai";
-import { isUser, jsonError, requireUser } from "@/lib/http";
+import { isUser, jsonError, rateLimitError, requireUser } from "@/lib/http";
+import { enforceChatPost } from "@/lib/limits";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -63,6 +64,8 @@ export async function POST(request: Request) {
   if (message.length > 2000) return jsonError("That question is too long.");
   const apiKey = process.env.OPENAI_API_KEY;
   if (!apiKey) return jsonError("Set OPENAI_API_KEY to ask questions about your library.", 400);
+  const limited = await enforceChatPost(user.id);
+  if (!limited.ok) return rateLimitError(limited.message, limited.retryAfterSeconds);
 
   const pool = getPool();
   const prior = await pool.query<{ role: "user" | "assistant"; content: string }>(

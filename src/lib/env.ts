@@ -4,8 +4,10 @@ export function requiredEnv(name: string) {
   return value;
 }
 
+/** Sample-library login. Production always wins; otherwise DEV_PREVIEW must be exactly "true". */
 export function devPreviewEnabled() {
-  return process.env.NODE_ENV !== "production" && process.env.DEV_PREVIEW === "true";
+  if (process.env.NODE_ENV === "production") return false;
+  return process.env.DEV_PREVIEW === "true";
 }
 
 export const SPOTIFY_SCOPES = [
