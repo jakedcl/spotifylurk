@@ -2,6 +2,10 @@
 
 Spotify Lurk: every song you saved in one list. Signs in with Spotify, syncs liked songs, playlist tracks, and saved-album tracks into Postgres, then lets you filter or ask an AI chat about the library. Production: spotifylurk.vercel.app.
 
+## Dev framework
+
+This repo follows Jake's dev framework: [jakedcl/dev-framework](https://github.com/jakedcl/dev-framework) (start at its `AGENTS.md`). The framework is the source of truth; if anything in this file conflicts with it, the framework wins.
+
 ## Stack
 - Next.js 16.3 (App Router), React 19.2, TypeScript, Tailwind CSS 4, @tanstack/react-virtual.
 - Postgres (Neon or local) with Drizzle ORM 0.45 and `pg`. SQL migrations in `drizzle/`.
