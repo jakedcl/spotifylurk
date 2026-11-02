@@ -14,7 +14,7 @@
     "ai:smoke": "tsx scripts/ai-smoke.ts"
   },
   "dependencies": {
-    "@tanstack/react-virtual": "^3.14.22",
+    "@tanstack/react-virtual": "^3.14.24",
     "drizzle-orm": "^0.45.4",
     "next": "16.4.3",
     "pg": "^8.23.1",
